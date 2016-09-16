@@ -28,7 +28,7 @@
 //////////////////////////////////////////
 //
 //                   !---------!
-//  radio rx (2) >---!         !---> display LCM E   (11)
+//  radio rx (4) >---!         !---> display LCM E   (11)
 //                   ! display !---> display LCM R/S (12)
 //                   !         !
 //                   !         !---> display LCM D4   (5)
@@ -42,14 +42,14 @@
 //// this is the "servente" code ////
 /////////////////////////////////////
 #include <VirtualWire.h>
-#include <LiquidCrystal.h>
+//#include <LiquidCrystal.h>
 // 
 // for my timing
 int dutyCycle = 0;
 unsigned long int Pa;
 unsigned long int Pb;
 // radio modules
-const int receive_pin = 4; 
+const int receive_pin = 11; 
 uint8_t buf[VW_MAX_MESSAGE_LEN];
 uint8_t buflen = VW_MAX_MESSAGE_LEN;
 // commands that can be receive
@@ -69,24 +69,26 @@ const int D4 = 5;
 const int D5 = 4;
 const int D6 = 3;
 const int D7 = 2;
+//
+  // initialize the library with the numbers of the interface pins
+//  LiquidCrystal lcd(RS, Enable, D4, D5, D6, D7);  
 //================================
 // setup
 //================================
 void setup() {
-  // initialize the library with the numbers of the interface pins
-  LiquidCrystal lcd(RS, Enable, D4, D5, D6, D7);  
   //radio rx
   vw_set_rx_pin(receive_pin);  
   vw_setup(2000);      
   vw_rx_start();
   // display 20x4
-  lcd.begin(20, 4);
+//  //lcd.begin(20, 4);
   ///////////12345678901234567890
-  lcd.setCursor(0,0);
-  lcd.print("Luvak Ar-domotica ;-)";
+  //lcd.setCursor(0,0);
+  //lcd.print("Luvak Ar-domotica ;-)");
   delay(1000);
-  lcd.setCursor(0,0);
-  lcd.print("                    ");
+  //lcd.setCursor(0,0);
+  //lcd.print("                    ");
+  pinMode(13, OUTPUT);
 }
 //================================
 // loop
@@ -135,60 +137,64 @@ void loop() {
 	// message received
 	//--------------------------------
 	if (vw_get_message(buf, &buflen)){
-	  String stringaRX="";
+    String stringaRX="";
+ 
 	  // retriving message
 	  for (int i = 0; i < buflen; i++){
 	    stringaRX += char(buf[i]);
 	  }
-	}
 	if(stringaRX==msg00){
 	  // all 'leds' are off
 	  ///////////12345678901234567890
-	  lcd.setCursor(0,0);
-	  lcd.print("                    ";	  
+	  //lcd.setCursor(0,0);
+	  //lcd.print("                    ");	  
 	}
 	if(stringaRX==msg01){
 	  // ignition state
 	  ///////////12345678901234567890
-	  lcd.setCursor(0,0);
-	  lcd.print("pfSense: in avvio   ";	  
+	  //lcd.setCursor(0,0);
+	  //lcd.print("pfSense: in avvio   ");	  
 	}
 	if(stringaRX==msg02){
 	  // on
 	  ///////////12345678901234567890
-	  lcd.setCursor(0,0);	  
-	  lcd.print("pfSense: ACCESO     ";	  	  
+	  //lcd.setCursor(0,0);	  
+	  //lcd.print("pfSense: ACCESO     ");	  	  
 	}
 	if(stringaRX==msg03){
 	  // shutdown
 	  ///////////12345678901234567890
-	  lcd.setCursor(0,0);
-	  lcd.print("pfSense: spegnendo  ";	  
+	  //lcd.setCursor(0,0);
+	  //lcd.print("pfSense: spegnendo  ");	  
 	}
 	if(stringaRX==msg04){
 	  // halted
 	  ///////////12345678901234567890
-	  lcd.setCursor(0,0);
-	  lcd.print("pfSense: SPENTO     ";	  	  
+	  //lcd.setCursor(0,0);
+	  //lcd.print("pfSense: SPENTO     ");	  	  
 	}
 	if(stringaRX==msg05){
 	  // internet ok
 	  ///////////12345678901234567890
-	  lcd.setCursor(0,0);
-	  lcd.print("internet OK         ";	  	  	  
+	  //lcd.setCursor(0,0);
+	  //lcd.print("internet OK         ");	  	  	  
 	}
 	if(stringaRX==msg06){
 	  // internet ko
 	  ///////////12345678901234567890
-	  lcd.setCursor(0,0);
-	  lcd.print("no conness.internet ";	  	  	  	  
+	  //lcd.setCursor(0,0);
+	  //lcd.print("no conness.internet ");	  	  	  	  
 	}
 	if(stringaRX==msg07){
 	  // internet ko
 	  ///////////12345678901234567890
-	  lcd.setCursor(0,0);
-	  lcd.print("< comando ricevuto >";	  	  	  	  
-	}	    
+	  //lcd.setCursor(0,0);
+	  //lcd.print("< comando ricevuto >");	
+       digitalWrite(13, HIGH);   // turn the LED on (HIGH is the voltage level)
+  delay(1000);              // wait for a second
+  digitalWrite(13, LOW);  	  	  	  
+	}
+	}  
 	//
 	//--------------------------------
 	// END every second
