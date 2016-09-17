@@ -42,36 +42,31 @@
 //// this is the "servente" code ////
 /////////////////////////////////////
 #include <VirtualWire.h>
-//#include <LiquidCrystal.h>
+const int MSG_LEN = 13;
+const int POSIZIONE_CARATT = 11;
+const int pinLED =13;
+#include <LiquidCrystal.h>
 // 
 // for my timing
 int dutyCycle = 0;
 unsigned long int Pa;
 unsigned long int Pb;
 // radio modules
-const int receive_pin = 11; 
+const int receive_pin = 2; 
 uint8_t buf[VW_MAX_MESSAGE_LEN];
 uint8_t buflen = VW_MAX_MESSAGE_LEN;
-// commands that can be receive
-//////////////////////////////123456789012
-const String msg00  ="statPFSE0000";
-const String msg01  ="statPFSE0001";
-const String msg02  ="statPFSE0002";
-const String msg03  ="statPFSE0003";
-const String msg04  ="statPFSE0004";
-const String msg05  ="statPFSE0005";
-const String msg06  ="statPFSE0006";
-const String msg07  ="statPFSE0011";
+
 // display pins
-const int RS = 12;
-const int Enable = 11;
+const int RS = 9;
+const int Enable = 10;
 const int D4 = 5;
-const int D5 = 4;
-const int D6 = 3;
-const int D7 = 2;
+const int D5 = 6;
+const int D6 = 7;
+const int D7 = 8;
+String stringaRX;
 //
   // initialize the library with the numbers of the interface pins
-//  LiquidCrystal lcd(RS, Enable, D4, D5, D6, D7);  
+LiquidCrystal lcd(RS, Enable, D4, D5, D6, D7);  
 //================================
 // setup
 //================================
@@ -81,14 +76,11 @@ void setup() {
   vw_setup(2000);      
   vw_rx_start();
   // display 20x4
-//  //lcd.begin(20, 4);
+  lcd.begin(20, 4);
   ///////////12345678901234567890
-  //lcd.setCursor(0,0);
-  //lcd.print("Luvak Ar-domotica ;-)");
-  delay(1000);
-  //lcd.setCursor(0,0);
-  //lcd.print("                    ");
-  pinMode(13, OUTPUT);
+  lcd.setCursor(0,0);
+  lcd.print("Luvak domotica 2016 ");
+
 }
 //================================
 // loop
@@ -133,68 +125,79 @@ void loop() {
 	// BEGIN every second
 	//--------------------------------
 	//
-	//--------------------------------
-	// message received
-	//--------------------------------
-	if (vw_get_message(buf, &buflen)){
-    String stringaRX="";
- 
-	  // retriving message
-	  for (int i = 0; i < buflen; i++){
-	    stringaRX += char(buf[i]);
-	  }
-	if(stringaRX==msg00){
-	  // all 'leds' are off
-	  ///////////12345678901234567890
-	  //lcd.setCursor(0,0);
-	  //lcd.print("                    ");	  
-	}
-	if(stringaRX==msg01){
-	  // ignition state
-	  ///////////12345678901234567890
-	  //lcd.setCursor(0,0);
-	  //lcd.print("pfSense: in avvio   ");	  
-	}
-	if(stringaRX==msg02){
-	  // on
-	  ///////////12345678901234567890
-	  //lcd.setCursor(0,0);	  
-	  //lcd.print("pfSense: ACCESO     ");	  	  
-	}
-	if(stringaRX==msg03){
-	  // shutdown
-	  ///////////12345678901234567890
-	  //lcd.setCursor(0,0);
-	  //lcd.print("pfSense: spegnendo  ");	  
-	}
-	if(stringaRX==msg04){
-	  // halted
-	  ///////////12345678901234567890
-	  //lcd.setCursor(0,0);
-	  //lcd.print("pfSense: SPENTO     ");	  	  
-	}
-	if(stringaRX==msg05){
-	  // internet ok
-	  ///////////12345678901234567890
-	  //lcd.setCursor(0,0);
-	  //lcd.print("internet OK         ");	  	  	  
-	}
-	if(stringaRX==msg06){
-	  // internet ko
-	  ///////////12345678901234567890
-	  //lcd.setCursor(0,0);
-	  //lcd.print("no conness.internet ");	  	  	  	  
-	}
-	if(stringaRX==msg07){
-	  // internet ko
-	  ///////////12345678901234567890
-	  //lcd.setCursor(0,0);
-	  //lcd.print("< comando ricevuto >");	
-       digitalWrite(13, HIGH);   // turn the LED on (HIGH is the voltage level)
-  delay(1000);              // wait for a second
-  digitalWrite(13, LOW);  	  	  	  
-	}
-	}  
+
+
+
+
+//--------------------------------
+  // BEGIN message received
+  //--------------------------------
+  if (vw_get_message(buf, &buflen)){
+    //
+    stringaRX="";
+    //
+      // retriving message
+    for (int i = 1; i <= POSIZIONE_CARATT; i++){
+      stringaRX += char(buf[i-1]);
+    }
+    if (stringaRX=="statPFSE000"){
+      //Serial.println(buf[POSIZIONE_CARATT]);
+      switch (buf[POSIZIONE_CARATT]){
+        case '0':
+          // all 'leds' are off
+          ///////////12345678901234567890
+          lcd.setCursor(0,0);
+          lcd.print("                    ");   
+          break;
+        case '1':
+          // ignition state
+          /////////////12345678901234567890
+          lcd.setCursor(0,0);
+          lcd.print("pfSense: in avvio   ");       
+          break;
+        case '2':
+          // on
+          ///////////12345678901234567890
+          lcd.setCursor(0,0);   
+          lcd.print("pfSense: ACCESO     ");          
+          break;
+        case '3':
+          // shutdown
+          ///////////12345678901234567890
+          lcd.setCursor(0,0);
+          lcd.print("pfSense: spegnendo  ");              
+          break;
+        case '4':
+          // halted
+          ///////////12345678901234567890
+          lcd.setCursor(0,0);
+          lcd.print("pfSense: SPENTO     ");              
+          break;
+        case '5':
+          // internet ok
+          ///////////12345678901234567890
+          lcd.setCursor(0,0);
+          lcd.print("internet OK         ");           
+          break;
+        case '6':
+          // internet ko
+          ///////////12345678901234567890
+          lcd.setCursor(0,0);
+          lcd.print("no conness.internet ");      
+          break;
+        case '7':
+          // internet ko
+          ///////////12345678901234567890
+          lcd.setCursor(0,0);
+          lcd.print("< comando ricevuto >");
+         break;
+      }
+    }
+
+  
+  }
+
+
 	//
 	//--------------------------------
 	// END every second
@@ -205,4 +208,3 @@ void loop() {
     }      
   }
 }
-
