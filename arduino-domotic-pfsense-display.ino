@@ -79,7 +79,7 @@ void setup() {
   lcd.begin(20, 4);
   ///////////12345678901234567890
   lcd.setCursor(0,0);
-  lcd.print("Luvak domotica 2016 ");
+  lcd.print("Valk domotica 2016  ");
 
 }
 //================================
@@ -144,31 +144,31 @@ void loop() {
       //Serial.println(buf[POSIZIONE_CARATT]);
       switch (buf[POSIZIONE_CARATT]){
         case '0':
-          // all 'leds' are off
+          // attempt sync
           ///////////12345678901234567890
           lcd.setCursor(0,0);
           lcd.print("                    ");   
           break;
         case '1':
-          // ignition state
+          // pfSense is in ignition state
           /////////////12345678901234567890
           lcd.setCursor(0,0);
           lcd.print("pfSense: in avvio   ");       
           break;
         case '2':
-          // on
+          // pfSense ON
           ///////////12345678901234567890
           lcd.setCursor(0,0);   
           lcd.print("pfSense: ACCESO     ");          
           break;
         case '3':
-          // shutdown
+          // pfSense in shutdown
           ///////////12345678901234567890
           lcd.setCursor(0,0);
           lcd.print("pfSense: spegnendo  ");              
           break;
         case '4':
-          // halted
+          // pfSense is OFF
           ///////////12345678901234567890
           lcd.setCursor(0,0);
           lcd.print("pfSense: SPENTO     ");              
@@ -176,20 +176,23 @@ void loop() {
         case '5':
           // internet ok
           ///////////12345678901234567890
-          lcd.setCursor(0,0);
-          lcd.print("internet OK         ");           
+          lcd.setCursor(18,0);
+          lcd.print("OK");           
           break;
         case '6':
           // internet ko
           ///////////12345678901234567890
-          lcd.setCursor(0,0);
-          lcd.print("no conness.internet ");      
+          lcd.setCursor(18,0);
+          lcd.print("--");      
           break;
         case '7':
-          // internet ko
+          // pfsense received command
           ///////////12345678901234567890
-          lcd.setCursor(0,0);
-          lcd.print("< comando ricevuto >");
+          lcd.setCursor(17,0);
+          lcd.print("*");
+          delay(1000);
+          lcd.setCursor(17,0);
+          lcd.print(" ");
          break;
       }
     }
