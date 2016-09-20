@@ -175,12 +175,18 @@ void loop() {
           break;
         case '5':
           // internet ok
+          lcd.setCursor(18,0);
+          lcd.print("  ");       
+          delay(2000);
           ///////////12345678901234567890
           lcd.setCursor(18,0);
           lcd.print("OK");           
           break;
         case '6':
           // internet ko
+          lcd.setCursor(18,0);
+          lcd.print("  ");       
+          delay(2000);          
           ///////////12345678901234567890
           lcd.setCursor(18,0);
           lcd.print("--");      
