@@ -44,6 +44,8 @@ LiquidCrystal lcd(RS, Enable, D4, D5, D6, D7);
 // setup
 //================================
 void setup() {
+  // led
+  pinMode(pinLED, OUTPUT);
   //radio rx
   vw_set_rx_pin(receive_pin);  
   vw_setup(2000);      
@@ -161,11 +163,13 @@ void loop() {
 	    case '7':
 	      // pfsense received command
 	      ///////////12345678901234567890
+	      digitalWrite(pinLED, HIGH);
 	      lcd.setCursor(17,0);
 	      lcd.print("*");
 	      delay(1000);
 	      lcd.setCursor(17,0);
 	      lcd.print(" ");
+	      digitalWrite(pinLED, LOW);
 	      break;
 	    }
 	  }
