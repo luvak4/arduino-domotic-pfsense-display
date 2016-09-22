@@ -173,6 +173,24 @@ void loop() {
 	      break;
 	    }
 	  }
+   String subStr=stringaRX.substring(0,7);
+   String valStringa;
+   ////////////////01234567
+   if (subStr=="anagACTU"){
+      String valStringa=stringaRX.substring(8,11);
+      lcd.setCursor(0,1);
+      lcd.print("                    "); 
+      lcd.setCursor(0,1);        
+      lcd.print(valStringa);
+   }
+      ////////////////01234567
+   if (subStr=="digiACTU"){
+      String valStringa=stringaRX.substring(8,11);
+      lcd.setCursor(0,2);
+      lcd.print("                    "); 
+      lcd.setCursor(0,2);  
+      lcd.print(valStringa);
+   }
 	}
 	//
 	//--------------------------------
