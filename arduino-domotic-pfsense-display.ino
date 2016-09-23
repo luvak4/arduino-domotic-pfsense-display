@@ -55,6 +55,7 @@ void setup() {
   ///////////12345678901234567890
   lcd.setCursor(0,0);
   lcd.print("Valk domotica 2016  ");
+  Serial.begin(9600);
 }
 //================================
 // loop
@@ -173,23 +174,39 @@ void loop() {
 	      break;
 	    }
 	  }
-   String subStr=stringaRX.substring(0,7);
+   stringaRX += char(buf[POSIZIONE_CARATT]);
+   String subStr=stringaRX.substring(0,8);
    String valStringa;
-   ////////////////01234567
+   Serial.println(subStr);
+   /////////////01234567
    if (subStr=="anagACTU"){
-      String valStringa=stringaRX.substring(8,11);
+    char t[4];
+    t[0]=buf[8];
+    t[1]=buf[9];
+    t[2]=buf[10];
+    t[3]=buf[11];
+    t[4]='\0';
+      //String valStringa=stringaRX.substring(8);
+      //Serial.println(valStringa);
       lcd.setCursor(0,1);
       lcd.print("                    "); 
       lcd.setCursor(0,1);        
-      lcd.print(valStringa);
+      lcd.print(atoi(t));
    }
       ////////////////01234567
    if (subStr=="digiACTU"){
-      String valStringa=stringaRX.substring(8,11);
+       char t[4];
+    t[0]=buf[8];
+    t[1]=buf[9];
+    t[2]=buf[10];
+    t[3]=buf[11];
+    t[4]='\0';
+      String valStringa=stringaRX.substring(8);
+      //Serial.println(valStringa);
       lcd.setCursor(0,2);
       lcd.print("                    "); 
       lcd.setCursor(0,2);  
-      lcd.print(valStringa);
+      lcd.print(atoi(t));
    }
 	}
 	//
