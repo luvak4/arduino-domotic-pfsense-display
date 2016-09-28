@@ -55,7 +55,7 @@ void setup() {
   ///////////12345678901234567890
   lcd.setCursor(0,0);
   lcd.print("Valk domotica 2016  ");
-  Serial.begin(9600);
+  //Serial.begin(9600);
 }
 //================================
 // loop
@@ -103,6 +103,7 @@ void loop() {
 	// BEGIN message received
 	//--------------------------------
 	if (vw_get_message(buf, &buflen)){
+    vw_rx_stop(); // disable rx section
 	  //
 	  stringaRX="";
 	  //
@@ -177,7 +178,7 @@ void loop() {
    stringaRX += char(buf[POSIZIONE_CARATT]);
    String subStr=stringaRX.substring(0,8);
    String valStringa;
-   Serial.println(subStr);
+   //Serial.println(subStr);
    /////////////01234567
    if (subStr=="anagACTU"){
     char t[4];
@@ -208,6 +209,7 @@ void loop() {
       lcd.setCursor(0,2);  
       lcd.print(atoi(t));
    }
+   vw_rx_start(); // enable rx section
 	}
 	//
 	//--------------------------------
